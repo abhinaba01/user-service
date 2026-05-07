@@ -1,6 +1,8 @@
 package com.ecommerce.userservice.service;
 
 import com.ecommerce.userservice.entity.User;
+import com.ecommerce.userservice.exception.EmailAlreadyExistsException;
+import com.ecommerce.userservice.exception.UserNotFoundException;
 import com.ecommerce.userservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -19,7 +21,7 @@ public class UserService {
 
 
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new EmailAlreadyExistsException("User with this email already exists");
         }
 
 
@@ -28,7 +30,7 @@ public class UserService {
 
     public User findUserById(Long id){
 
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("ID Does not exist"));
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User with ID" + id + "not found"));
     }
 
     public List<User> findAllUsers(){
@@ -38,7 +40,7 @@ public class UserService {
     public void deleteUserById(Long id){
 
         if( !userRepository.existsById(id)){
-            throw new RuntimeException("User with this ID does not exist.");
+            throw new UserNotFoundException("User with ID" + id + "not found");
         }
 
         userRepository.deleteById(id);
@@ -47,7 +49,7 @@ public class UserService {
     public User updateUser(User user){
 
         User existingUser = userRepository.findById(user.getId()).
-                                orElseThrow(() -> new RuntimeException("ID Does not Exist"));
+                                orElseThrow(() -> new UserNotFoundException("User with ID" + user.getId() + "not found"));
 
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());

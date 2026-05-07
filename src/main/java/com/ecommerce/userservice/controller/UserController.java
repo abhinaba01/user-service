@@ -3,6 +3,7 @@ package com.ecommerce.userservice.controller;
 
 import com.ecommerce.userservice.entity.User;
 import com.ecommerce.userservice.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,7 @@ public class UserController{
     }
 
     @PostMapping
-    public User saveUser(@RequestBody User user){
+    public User saveUser(@Valid  @RequestBody User user){
 
         return userService.registerUser(user);
     }
@@ -45,7 +46,7 @@ public class UserController{
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id , @RequestBody User user){
+    public User updateUser(@Valid @PathVariable Long id , @RequestBody User user){
 
         user.setId(id);
         return userService.updateUser(user);
