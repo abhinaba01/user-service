@@ -1,6 +1,8 @@
 package com.ecommerce.userservice.controller;
 
 
+import com.ecommerce.userservice.dto.UserRequestDTO;
+import com.ecommerce.userservice.dto.UserResponseDTO;
 import com.ecommerce.userservice.entity.User;
 import com.ecommerce.userservice.service.UserService;
 import jakarta.validation.Valid;
@@ -21,22 +23,22 @@ public class UserController{
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id){
+    public UserResponseDTO getUserById(@PathVariable Long id){
         
         return userService.findUserById(id);
 
     }
 
     @GetMapping
-    public List<User> getAllUsers(){
+    public List<UserResponseDTO> getAllUsers(){
 
         return userService.findAllUsers();
     }
 
     @PostMapping
-    public User saveUser(@Valid  @RequestBody User user){
+    public UserResponseDTO saveUser(@Valid  @RequestBody UserRequestDTO request){
 
-        return userService.registerUser(user);
+        return userService.registerUser(request);
     }
 
     @DeleteMapping("/{id}")
@@ -46,10 +48,10 @@ public class UserController{
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@Valid @PathVariable Long id , @RequestBody User user){
+    public UserResponseDTO updateUser(@Valid @PathVariable Long id , @RequestBody UserRequestDTO request){
 
-        user.setId(id);
-        return userService.updateUser(user);
+
+        return userService.updateUser(id,request);
     }
 
 }

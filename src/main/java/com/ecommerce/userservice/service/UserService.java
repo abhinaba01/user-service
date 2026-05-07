@@ -1,5 +1,7 @@
 package com.ecommerce.userservice.service;
 
+import com.ecommerce.userservice.dto.UserRequestDTO;
+import com.ecommerce.userservice.dto.UserResponseDTO;
 import com.ecommerce.userservice.entity.User;
 import com.ecommerce.userservice.exception.EmailAlreadyExistsException;
 import com.ecommerce.userservice.exception.UserNotFoundException;
@@ -17,7 +19,17 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User registerUser(User user) {
+    public UserResponseDTO registerUser(UserRequestDTO request) {
+
+
+        User user = new User();
+
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+
+        user.setRole("USER");
 
 
         if (userRepository.existsByEmail(user.getEmail())) {
@@ -25,16 +37,37 @@ public class UserService {
         }
 
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return new UserResponseDTO( savedUser.getId(),
+                savedUser.getFirstName(),
+                savedUser.getLastName(),
+                savedUser.getEmail(),
+                savedUser.getRole()
+        );
+
     }
 
-    public User findUserById(Long id){
+    public UserResponseDTO findUserById(Long id){
 
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User with ID" + id + "not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User with ID" + id + "not found"));
+
+        return new UserResponseDTO( user.getId(),
+                                    user.getFirstName(),
+                                    user.getLastName(),
+                                    user.getEmail(),
+                                    user.getRole()
+                                    );
     }
 
-    public List<User> findAllUsers(){
-        return userRepository.findAll();
+    public List<UserResponseDTO> findAllUsers(){
+        return userRepository.findAll().stream().map(
+                user -> new UserResponseDTO( user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getRole()
+        )).toList();
+
     }
 
     public void deleteUserById(Long id){
@@ -46,17 +79,23 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User updateUser(User user){
+    public UserResponseDTO updateUser( Long id ,UserRequestDTO request){
 
-        User existingUser = userRepository.findById(user.getId()).
-                                orElseThrow(() -> new UserNotFoundException("User with ID" + user.getId() + "not found"));
+        User existingUser = userRepository.findById(id).
+                                orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
 
-        existingUser.setFirstName(user.getFirstName());
-        existingUser.setLastName(user.getLastName());
-        existingUser.setEmail(user.getEmail());
+        existingUser.setFirstName(request.getFirstName());
+        existingUser.setLastName(request.getLastName());
+        existingUser.setEmail(request.getEmail());
 
+        User newUser = userRepository.save(existingUser);
 
+        return new UserResponseDTO( newUser.getId(),
+                newUser.getFirstName(),
+                newUser.getLastName(),
+                newUser.getEmail(),
+                newUser.getRole()
+        );
 
-        return userRepository.save(existingUser);
     }
 }
