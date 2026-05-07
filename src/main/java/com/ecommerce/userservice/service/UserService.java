@@ -6,6 +6,7 @@ import com.ecommerce.userservice.entity.User;
 import com.ecommerce.userservice.exception.EmailAlreadyExistsException;
 import com.ecommerce.userservice.exception.UserNotFoundException;
 import com.ecommerce.userservice.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
@@ -13,10 +14,12 @@ import java.util.*;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository , PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserResponseDTO registerUser(UserRequestDTO request) {
@@ -27,7 +30,7 @@ public class UserService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         user.setRole("USER");
 
