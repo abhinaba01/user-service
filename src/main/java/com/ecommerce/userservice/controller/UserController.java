@@ -37,12 +37,6 @@ public class UserController{
         return userService.findAllUsers();
     }
 
-    @PostMapping
-    public UserResponseDTO saveUser(@Valid  @RequestBody UserRequestDTO request){
-
-        return userService.registerUser(request);
-    }
-
     @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable Long id){
 
@@ -55,7 +49,5 @@ public class UserController{
 
         return userService.updateUser(id,request);
     }
-
-
 
 }

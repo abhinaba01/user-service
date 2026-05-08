@@ -5,8 +5,7 @@ import com.ecommerce.userservice.dto.LoginResponseDTO;
 import com.ecommerce.userservice.dto.UserRequestDTO;
 import com.ecommerce.userservice.dto.UserResponseDTO;
 import com.ecommerce.userservice.entity.User;
-import com.ecommerce.userservice.exception.EmailAlreadyExistsException;
-import com.ecommerce.userservice.exception.InvalidCredentialsException;
+
 import com.ecommerce.userservice.exception.UserNotFoundException;
 import com.ecommerce.userservice.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,33 +24,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserResponseDTO registerUser(UserRequestDTO request) {
 
-
-        User user = new User();
-
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        user.setRole("USER");
-
-
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new EmailAlreadyExistsException("User with this email already exists");
-        }
-
-
-        User savedUser = userRepository.save(user);
-        return new UserResponseDTO(savedUser.getId(),
-                savedUser.getFirstName(),
-                savedUser.getLastName(),
-                savedUser.getEmail(),
-                savedUser.getRole()
-        );
-
-    }
 
     public UserResponseDTO findUserById(Long id) {
 

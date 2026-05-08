@@ -30,7 +30,9 @@ public class User {
     @NotBlank(message = "Password cannot be empty")
     @Size(min = 6,message = "Password must be atleast 6 characters")
     private String password;
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
                             // Set automatically on INSERT
 //    @Column(name = "created_at", updatable = false)
@@ -70,11 +72,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

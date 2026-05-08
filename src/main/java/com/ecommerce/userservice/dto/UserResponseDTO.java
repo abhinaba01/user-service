@@ -1,13 +1,15 @@
 
 package com.ecommerce.userservice.dto;
 
+import com.ecommerce.userservice.entity.Role;
+
 public class UserResponseDTO {
 
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
-    private String role;
+    private Role role;
 
     public UserResponseDTO() {
     }
@@ -16,7 +18,7 @@ public class UserResponseDTO {
                            String firstName,
                            String lastName,
                            String email,
-                           String role) {
+                           Role role) {
 
         this.id = id;
         this.firstName = firstName;
@@ -57,11 +59,11 @@ public class UserResponseDTO {
         this.email = email;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

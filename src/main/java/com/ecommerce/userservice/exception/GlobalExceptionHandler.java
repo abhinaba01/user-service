@@ -33,4 +33,15 @@ public class GlobalExceptionHandler {
         );
     }
 
+
+    @ExceptionHandler(InvalidRoleException.class)
+    public ResponseEntity<String>
+    handleInvalidRoleException(
+            InvalidRoleException ex) {
+
+        return new ResponseEntity<>(
+                ex.getMessage(),
+                HttpStatus.UNAUTHORIZED
+        );
+    }
 }

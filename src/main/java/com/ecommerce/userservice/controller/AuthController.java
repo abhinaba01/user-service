@@ -3,6 +3,8 @@ package com.ecommerce.userservice.controller;
 
 import com.ecommerce.userservice.dto.LoginRequestDTO;
 import com.ecommerce.userservice.dto.LoginResponseDTO;
+import com.ecommerce.userservice.dto.UserRequestDTO;
+import com.ecommerce.userservice.dto.UserResponseDTO;
 import com.ecommerce.userservice.service.AuthService;
 import com.ecommerce.userservice.service.UserService;
 import jakarta.validation.Valid;
@@ -17,8 +19,16 @@ public class AuthController {
 
     private final AuthService authService;
 
+
     public AuthController(AuthService authService){
         this.authService = authService;
+    }
+
+
+    @PostMapping("/register")
+    public UserResponseDTO register (@Valid @RequestBody UserRequestDTO request){
+
+        return authService.registerUser(request);
     }
 
 

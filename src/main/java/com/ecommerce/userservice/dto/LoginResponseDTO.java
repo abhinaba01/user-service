@@ -1,12 +1,16 @@
 package com.ecommerce.userservice.dto;
 
+import com.ecommerce.userservice.entity.Role;
+
 public class LoginResponseDTO {
 
     private Long id;
     private String message;
     private String email;
-    private String role;
+    private Role role;
+    private String token;
 
+    
     public LoginResponseDTO() {
     }
 
@@ -14,12 +18,14 @@ public class LoginResponseDTO {
             Long id,
             String message,
             String email,
-            String role
+            Role role,
+            String token
     ) {
         this.id = id;
         this.message = message;
         this.email = email;
         this.role = role;
+        this.token = token;
     }
 
     public Long getId(){
@@ -47,11 +53,19 @@ public class LoginResponseDTO {
         this.email = email;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String gettoken() {
+        return token;
+    }
+
+    public void settoken(String token) {
+        this.token = token;
     }
 }
