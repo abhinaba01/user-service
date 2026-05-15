@@ -87,7 +87,7 @@ public class AuthService {
         }
 
         else{
-            String token = jwtService.generateJWTToken(user.getEmail());
+            String token = jwtService.generateJWTToken(user);
             return new LoginResponseDTO(
                     user.getId(),
                     "AUTHENTICATED",

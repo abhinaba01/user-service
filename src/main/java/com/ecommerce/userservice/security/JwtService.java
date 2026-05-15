@@ -1,6 +1,7 @@
 package com.ecommerce.userservice.security;
 
 
+import com.ecommerce.userservice.entity.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Service;
@@ -26,10 +27,12 @@ public class JwtService {
                     SECRET_KEY.getBytes(StandardCharsets.UTF_8)
             );
 
-    public String generateJWTToken(String email){
+    public String generateJWTToken(User user){
 
         return Jwts.builder()
-                .subject(email)
+                .subject(user.getEmail())
+                .claim("role", user.getRole().name())
+                .claim("userId", user.getId())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(key, SignatureAlgorithm.HS256)
