@@ -27,17 +27,21 @@ public class JwtService {
                     SECRET_KEY.getBytes(StandardCharsets.UTF_8)
             );
 
+
+
+
     public String generateJWTToken(User user){
 
         return Jwts.builder()
                 .subject(user.getEmail())
                 .claim("role", user.getRole().name())
-                .claim("userId", user.getId())
+                .claim("userId", user.getId()) // FIX 4: Must inject the ID
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
+
 
     public String extractEmail(String token) {
 
